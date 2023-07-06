@@ -1,27 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './index.scss';
+import { Success } from './components/Success';
+import { Users } from './components/Users';
+
+// Тут список пользователей: https://reqres.in/api/users
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  const onClickPlus = ()=>
-{
-  setCount(count+1);
-}
-const onClickMinus = ()=>
-{
-  setCount(count-1);
-}
   return (
-
-
     <div className="App">
-      <div>
-        <h2>Счетчик:</h2>
-        <h1>{count}</h1>
-        <button onClick = {onClickMinus} className="minus">- Минус</button>
-        <button onClick = {onClickPlus} className="plus">Плюс +</button>
-      </div>
+      <Users />
+      {/* <Success /> */}
     </div>
   );
 }
