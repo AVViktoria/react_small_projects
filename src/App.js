@@ -17,10 +17,10 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  // контролируемый импут
+  // контролируемый input
   const [searchValue, setSearchValue] = useState("");
 
-  // оформляем фетч
+  // оформляем fetch
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
