@@ -36,7 +36,7 @@ function App() {
       })
       .catch((err) => {
         console.warn(err);
-        alert("Oшибка при получении данных");
+        alert("Ошибка при получении данных");
       })
       .finally(() => setIsLoading(false));
   }, [categoryId, page]);
