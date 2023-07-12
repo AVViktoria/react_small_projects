@@ -13,7 +13,9 @@ const cats = [
 function App() {
   // сортируем по категориям
   const [categoryId, setCategoryId] = useState(0);
-  // console.log();
+  const [page, setPage] = useState(1);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   // контролируемый импут
   const [searchValue, setSearchValue] = useState("");
@@ -22,15 +24,11 @@ function App() {
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
-    // <Table.Cell>
-    //   {user.company !== null ? (
-    //   <Link to={`/companies/${user.company._id}`}>{user.company.name}</Link>
-    // ) : null}
+    setIsLoading(true);
+    const category = categoryId ? `category=${categoryId}` : "";
 
     fetch(
-      `https://64a78152096b3f0fcc8161fd.mockapi.io/photos?${
-        categoryId ? `category=${categoryId}` : ""
-      }`
+      `https://64a78152096b3f0fcc8161fd.mockapi.io/photos?page=${page}&limit=3&${category}`
     )
       .then((res) => res.json())
       .then((json) => {
@@ -39,8 +37,9 @@ function App() {
       .catch((err) => {
         console.warn(err);
         alert("Oшибка при получении данных");
-      });
-  }, [categoryId]);
+      })
+      .finally(() => setIsLoading(false));
+  }, [categoryId, page]);
 
   return (
     <div className="App">
@@ -65,18 +64,27 @@ function App() {
         />
       </div>
       <div className="content">
-        {collections
-          .filter((obj) =>
-            obj.name.toLowerCase().includes(searchValue.toLowerCase())
-          )
-          .map((obj, index) => (
-            <Collection key={index} name={obj.name} images={obj.photos} />
-          ))}
+        {isLoading ? (
+          <h2>Loading...</h2>
+        ) : (
+          collections
+            .filter((obj) =>
+              obj.name.toLowerCase().includes(searchValue.toLowerCase())
+            )
+            .map((obj, index) => (
+              <Collection key={index} name={obj.name} images={obj.photos} />
+            ))
+        )}
       </div>
       <ul className="pagination">
-        <li>1</li>
-        <li className="active">2</li>
-        <li>3</li>
+        {[...Array(5)].map((_, i) => (
+          <li
+            onClick={() => setPage(i + 1)}
+            className={page === i + 1 ? "active" : ""}
+          >
+            {i + 1}
+          </li>
+        ))}
       </ul>
     </div>
   );
